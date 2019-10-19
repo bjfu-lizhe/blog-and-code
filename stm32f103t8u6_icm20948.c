@@ -1,3 +1,7 @@
+/*
+ * Author : Lizhe
+ * Corporation : Beijing Forestry University
+ */
 #include "driver.h"
 /***************************************************/
 #define ICM20948_ADDR 0x68
