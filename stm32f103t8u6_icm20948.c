@@ -58,7 +58,7 @@ static void i2c_init(void)
 	GPIO_Initure.GPIO_Speed = GPIO_Speed_50MHz;	
 	GPIO_Init(GPIOB, &GPIO_Initure);	
 	I2C_SDA=1;
-  I2C_SCL=1; 
+  	I2C_SCL=1; 
 }
 static void i2c_start(void)
 {
@@ -119,66 +119,66 @@ static void i2c_nack(void)
 static void i2c_send_byte(u8 txd)
 {                        
   u8 t;   
-	SDA_OUT(); 	    
+  SDA_OUT(); 	    
   I2C_SCL=0;
   for(t=0;t<8;t++){              
-    I2C_SDA = (txd & 0x80) >> 7;
-    txd <<= 1; 	  
-    delay_us(2);
-	  I2C_SCL = 1;
-		delay_us(2); 
-		I2C_SCL = 0;	
-		delay_us(2);
+  	I2C_SDA = (txd & 0x80) >> 7;
+    	txd <<= 1; 	  
+    	delay_us(2);
+	I2C_SCL = 1;
+	delay_us(2); 
+	I2C_SCL = 0;	
+	delay_us(2);
   }	 
 } 	    
 static u8 i2c_read_byte(unsigned char ack)
 {
-	unsigned char i,receive=0;
-	SDA_IN();
+  unsigned char i,receive=0;
+  SDA_IN();
   for(i = 0;i < 8;i++){
     I2C_SCL=0; 
     delay_us(2);
-		I2C_SCL=1;
+    I2C_SCL=1;
     receive<<=1;
     if(READ_SDA)receive++;   
-		delay_us(1); 
+    delay_us(1); 
   }					 
-    if (!ack)i2c_nack();
-    else{i2c_ack();}
-    return receive;
+  if (!ack)i2c_nack();
+  else{i2c_ack();}
+  return receive;
 }
 static u8 i2c_write_byte_addr(u8 addr,u8 reg,u8 data) 				 
 { 
   i2c_start(); 
-	i2c_send_byte((addr<<1)|0);
-	if(i2c_wait_ack()){
-		i2c_stop();		 
-		return 1;		
-	}
+  i2c_send_byte((addr<<1)|0);
+  if(i2c_wait_ack()){
+  	i2c_stop();		 
+	return 1;		
+  }
   i2c_send_byte(reg);
   i2c_wait_ack();
-	i2c_send_byte(data);
-	if(i2c_wait_ack()){
-		i2c_stop();	 
-		return 1;		 
-	}		 
+  i2c_send_byte(data);
+  if(i2c_wait_ack()){
+	i2c_stop();	 
+	return 1;		 
+  }		 
   i2c_stop();	 
-	return 0;
+  return 0;
 }
 static u8 i2c_read_byte_addr(u8 addr,u8 reg)
 {
-	u8 res;
+  u8 res;
   i2c_start(); 
-	i2c_send_byte((addr<<1)|0);
-	i2c_wait_ack();	
+  i2c_send_byte((addr<<1)|0);
+  i2c_wait_ack();	
   i2c_send_byte(reg);
   i2c_wait_ack();
   i2c_start();
-	i2c_send_byte((addr<<1)|1);
+  i2c_send_byte((addr<<1)|1);
   i2c_wait_ack();
-	res=i2c_read_byte(0);
+  res=i2c_read_byte(0);
   i2c_stop();
-	return res;		
+  return res;		
 }
 unsigned char icm20948_init(void)
 {	
