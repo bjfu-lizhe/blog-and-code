@@ -1,5 +1,5 @@
-#ifndef __driver_h
-#define __driver_h
+#ifndef __icm20948_h
+#define __icm20948_h
 
 #include "stm32f10x.h"
 #include "delay.h"
